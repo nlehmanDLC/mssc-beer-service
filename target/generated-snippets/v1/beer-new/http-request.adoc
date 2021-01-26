@@ -1,9 +1,0 @@
-[source,http,options="nowrap"]
-----
-POST /api/v1/beer/ HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 162
-Host: dev.momtex.com:80
-
-{"id":null,"version":null,"createdDate":null,"lastModifiedDate":null,"beerName":"Corona","beerStyle":"ALE","upc":123456789012,"price":12.95,"quantityOnHand":null}
-----

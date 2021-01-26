@@ -1,7 +1,0 @@
-|===
-|Parameter|Description
-
-|`+is-cold+`
-|Is Cold Query param
-
-|===

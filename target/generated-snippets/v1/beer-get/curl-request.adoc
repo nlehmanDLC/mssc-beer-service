@@ -1,5 +1,0 @@
-[source,bash]
-----
-$ curl 'https://dev.momtex.com:80/api/v1/beer/86c093c0-1e9e-48be-912d-20407467a715?is-cold=yes' -i -X GET \
-    -H 'Accept: application/json'
-----
