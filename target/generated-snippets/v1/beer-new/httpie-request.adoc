@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"id":null,"version":null,"createdDate":null,"lastModifiedDate":null,"beerName":"Corona","beerStyle":"ALE","upc":123456789012,"price":12.95,"quantityOnHand":null}' | http POST 'https://dev.momtex.com:80/api/v1/beer/' \
+    'Content-Type:application/json;charset=UTF-8'
+----
