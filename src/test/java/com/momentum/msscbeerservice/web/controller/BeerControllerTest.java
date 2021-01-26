@@ -1,6 +1,7 @@
 package com.momentum.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.momentum.msscbeerservice.services.BeerService;
 import com.momentum.msscbeerservice.web.model.BeerDto;
 import com.momentum.msscbeerservice.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
@@ -19,6 +21,8 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -37,6 +41,9 @@ class BeerControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @MockBean
+    BeerService beerService;
+
     private BeerDto beerDto;
 
     @BeforeEach
@@ -52,6 +59,8 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() throws Exception {
+        given(beerService.getById(any())).willReturn(beerDto);
+
         mockMvc.perform(
                 get("/api/v1/beer/{beerId}", UUID.randomUUID().toString())
                         .param("is-cold", "yes")
