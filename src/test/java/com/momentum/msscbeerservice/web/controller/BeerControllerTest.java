@@ -1,6 +1,7 @@
 package com.momentum.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.momentum.msscbeerservice.bootstrap.BeerLoader;
 import com.momentum.msscbeerservice.services.BeerService;
 import com.momentum.msscbeerservice.web.model.BeerDto;
 import com.momentum.msscbeerservice.web.model.BeerStyleEnum;
@@ -52,7 +53,7 @@ class BeerControllerTest {
                 .builder()
                 .beerName("Corona")
                 .beerStyle(BeerStyleEnum.ALE)
-                .upc(123456789012L)
+                .upc(BeerLoader.BEER_1_UPC)
                 .price(new BigDecimal("12.95"))
                 .build();
     }
@@ -93,6 +94,8 @@ class BeerControllerTest {
 
         ConstrainedFields fields = new ConstrainedFields(BeerDto.class);
 
+        given(beerService.saveNewBeer(any())).willReturn(beerDto);
+
         mockMvc.perform(
                 post("/api/v1/beer/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,6 +117,7 @@ class BeerControllerTest {
 
     @Test
     void updateBeerById() throws Exception {
+        given(beerService.updateBeer(any(), any())).willReturn(beerDto);
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         mockMvc.perform(
