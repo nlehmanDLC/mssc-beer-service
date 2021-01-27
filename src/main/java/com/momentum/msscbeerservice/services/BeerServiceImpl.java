@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,7 +24,12 @@ public class BeerServiceImpl implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public BeerDto getById(UUID beerId) {
+    public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
+        if (showInventoryOnHand) {
+            return beerMapper.beerToBeerDtoWithInventory(
+                    beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
+            );
+        }
         return beerMapper.beerToBeerDto(
                 beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
         );
@@ -48,7 +54,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, PageRequest pageRequest) {
+    public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, Boolean showInventoryOnHand, PageRequest pageRequest) {
 
         BeerPagedList beerPagedList;
         Page<Beer> beerPage;
@@ -70,12 +76,19 @@ public class BeerServiceImpl implements BeerService {
                 beerPage
                         .getContent()
                         .stream()
-                        .map(beerMapper::beerToBeerDtoWithInventory)
+                        .map(getBeerDto(showInventoryOnHand))
                         .collect(Collectors.toList()),
                 PageRequest
                         .of(beerPage.getPageable().getPageNumber(), beerPage.getPageable().getPageSize()),
                 beerPage.getTotalElements());
 
         return beerPagedList;
+    }
+
+    private Function<Beer, BeerDto> getBeerDto(Boolean showInventoryOnHand) {
+        if (showInventoryOnHand) {
+            return beerMapper::beerToBeerDtoWithInventory;
+        }
+        return beerMapper::beerToBeerDto;
     }
 }
