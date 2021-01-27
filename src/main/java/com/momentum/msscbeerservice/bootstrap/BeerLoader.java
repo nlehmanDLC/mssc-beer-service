@@ -3,11 +3,10 @@ package com.momentum.msscbeerservice.bootstrap;
 import com.momentum.msscbeerservice.domain.Beer;
 import com.momentum.msscbeerservice.repositories.BeerRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
+//@Component
 public class BeerLoader implements CommandLineRunner {
 
     public static final String BEER_1_UPC = "0632134200036";
