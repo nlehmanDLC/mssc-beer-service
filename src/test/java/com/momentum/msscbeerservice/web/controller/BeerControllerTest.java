@@ -22,9 +22,9 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -57,6 +57,37 @@ class BeerControllerTest {
                 .upc(BeerLoader.BEER_1_UPC)
                 .price(new BigDecimal("12.95"))
                 .build();
+    }
+
+    @Test
+    void getBeerByUpc() throws Exception {
+        given(beerService.getByUpc(anyString(), anyBoolean())).willReturn(beerDto);
+
+        mockMvc.perform(
+                get("/api/v1/beerUpc/{upc}", BeerLoader.BEER_1_UPC)
+                        .param("showInventoryOnHand", "false")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("v1/beer-get-upc",
+                                pathParameters(
+                                        parameterWithName("upc").description("UPC of desired beer to get.")
+                                ),
+                                requestParameters(
+                                        parameterWithName("showInventoryOnHand").description("Obtain On Hand Inventory")
+                                ),
+                                responseFields(
+                                        fieldWithPath("id").description("Id of Beer"),
+                                        fieldWithPath("version").description("Version number"),
+                                        fieldWithPath("createdDate").description("Date Created"),
+                                        fieldWithPath("lastModifiedDate").description("Date Updated"),
+                                        fieldWithPath("beerName").description("Beer Name"),
+                                        fieldWithPath("beerStyle").description("Beer Style"),
+                                        fieldWithPath("upc").description("UPC of Beer"),
+                                        fieldWithPath("price").description("Price"),
+                                        fieldWithPath("quantityOnHand").description("Quantity On hand")
+                                )));
+        then(beerService).should().getByUpc(anyString(), anyBoolean());
     }
 
     @Test
