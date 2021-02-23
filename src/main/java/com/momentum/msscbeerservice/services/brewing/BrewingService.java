@@ -1,4 +1,4 @@
-package com.momentum.msscbeerservice.services;
+package com.momentum.msscbeerservice.services.brewing;
 
 import com.momentum.msscbeerservice.config.JmsConfig;
 import com.momentum.msscbeerservice.domain.Beer;

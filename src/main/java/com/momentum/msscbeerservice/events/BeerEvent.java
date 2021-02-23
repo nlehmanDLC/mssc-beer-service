@@ -1,16 +1,18 @@
 package com.momentum.msscbeerservice.events;
 
 import com.momentum.msscbeerservice.web.model.BeerDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BeerEvent {
 
     static final long serialVersionUID = -8004823140984486493L;
 
-    private final BeerDto beerDto;
+    private BeerDto beerDto;
 }
