@@ -2,10 +2,10 @@ package com.momentum.msscbeerservice.services.brewing;
 
 import com.momentum.msscbeerservice.config.JmsConfig;
 import com.momentum.msscbeerservice.domain.Beer;
-import com.momentum.msscbeerservice.events.BrewBeerEvent;
 import com.momentum.msscbeerservice.repositories.BeerRepository;
 import com.momentum.msscbeerservice.services.inventory.BeerInventoryService;
 import com.momentum.msscbeerservice.web.mappers.BeerMapper;
+import guru.sfg.common.events.BrewBeerEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
@@ -30,6 +30,7 @@ public class BrewingService {
 
         beers.forEach(beer -> {
             Integer invQOH = beerInventoryService.getOnHandInventory(beer.getId());
+            log.debug("Checking Inventory for: " + beer.getBeerName() + " / " + beer.getId());
             log.debug("Min On hand is: " + beer.getMinOnHand());
             log.debug("Inventory is: " + invQOH);
 

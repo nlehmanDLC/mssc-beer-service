@@ -1,4 +1,4 @@
-package com.momentum.msscbeerservice.events;
+package guru.sfg.common.events;
 
 import com.momentum.msscbeerservice.web.model.BeerDto;
 import lombok.NoArgsConstructor;
